@@ -106,12 +106,12 @@ multilingual-health-qa/
 │   ├── 01_data_exploration.ipynb  # EDA — distributions, language analysis, length stats
 │   ├── 02_preprocessing.ipynb     # Text cleaning and saving cleaned splits
 │   ├── 03_baseline.ipynb          # mT5-base zero-shot / direct fine-tune baseline
-│   ├── 04_experiments.ipynb       # LoRA/PEFT experiments and hyperparameter search
-│   └── 05_inference.ipynb         # Generate predictions on test set, build submission CSV
+│   └── 04_experiments.ipynb       # LoRA/PEFT experiments and hyperparameter search
 │
 ├── src/
 │   ├── evaluate.py                # ROUGE scoring functions
 │   ├── retrieval.py               # Sentence-embedding retrieval pipeline
+│   ├── retrieval_bm25.py          # BM25 keyword-based retrieval (Experiment 16)
 │   └── utils.py                   # Text cleaning and submission formatting
 │
 ├── outputs/
@@ -120,6 +120,7 @@ multilingual-health-qa/
 │   │   ├── length_distributions.png
 │   │   └── length_by_language.png
 │   └── submissions/               # Submission CSVs from retrieval experiments
+│       ├── submission_bm25.csv
 │       ├── submission_retrieval.csv
 │       ├── submission_retrieval_answer.csv
 │       ├── submission_retrieval_final.csv
@@ -209,7 +210,7 @@ jupyter notebook notebooks/
 
 ## Training on Colab / Kaggle
 
-Notebooks `03`, `04`, and `05` require a GPU. If you do not have a local GPU, use one of
+Notebooks `03` and `04` require a GPU. If you do not have a local GPU, use one of
 the free cloud platforms below.
 
 ### Google Colab
@@ -259,6 +260,8 @@ All scores are from the Zindi public leaderboard.
 | 12 | Top-3 concatenation | 0.411156 |
 | **13** | **Language-aware + mpnet embeddings (BEST)** | **0.510140** |
 | 14 | Question+answer combined embedding | 0.432645 |
+| 15 | RAG: retrieval + fine-tuned generation | 0.228704 |
+| **16** | BM25 keyword retrieval | 0.461861 |
 
 > Experiments 3 and 6 are omitted — both sessions crashed before a Zindi submission
 > could be made. Experiments 8 and 9 were local analysis runs with no leaderboard submission.

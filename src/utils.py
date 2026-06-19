@@ -2,6 +2,10 @@
 Utility functions for the Multilingual Health QA project.
 """
 
+import re
+import pandas as pd
+
+
 def clean_text(text):
     """
     Clean text while preserving African language special characters.
@@ -9,12 +13,9 @@ def clean_text(text):
     - Removes extra newlines
     - Does NOT lowercase (case sensitive languages)
     """
-    import re
-    import pandas as pd
     if pd.isna(text):
         return text
     text = str(text).strip()
-    text = re.sub(r'\n+', ' ', text)
     text = re.sub(r'\s+', ' ', text)
     return text
 

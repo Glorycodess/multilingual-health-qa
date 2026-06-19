@@ -3,7 +3,9 @@ Evaluation functions for the Multilingual Health QA project.
 Computes ROUGE-1 and ROUGE-L scores against reference answers.
 """
 
+import pandas as pd
 from rouge_score import rouge_scorer
+
 
 def compute_rouge(predictions, references):
     """
@@ -44,8 +46,6 @@ def evaluate_by_language(predictions, references, subsets):
     Returns:
         dict with per-language ROUGE scores
     """
-    import pandas as pd
-    
     df = pd.DataFrame({
         'prediction': predictions,
         'reference': references,
