@@ -110,13 +110,23 @@ multilingual-health-qa/
 │   ├── 04_experiments.ipynb       # LoRA/PEFT experiments and hyperparameter search
 │   └── 05_inference.ipynb         # Generate predictions on test set, build submission CSV
 │
-├── src/                           # Reusable Python modules (training utils, metrics, etc.)
+├── src/
+│   ├── evaluate.py                # ROUGE scoring functions
+│   ├── retrieval.py               # Sentence-embedding retrieval pipeline
+│   └── utils.py                   # Text cleaning and submission formatting
 │
 ├── outputs/
-│   └── figures/                   # EDA plots saved by 01_data_exploration.ipynb
-│       ├── language_distribution.png
-│       ├── length_distributions.png
-│       └── length_by_language.png
+│   ├── figures/                   # EDA plots saved by 01_data_exploration.ipynb
+│   │   ├── language_distribution.png
+│   │   ├── length_distributions.png
+│   │   └── length_by_language.png
+│   └── submissions/               # Submission CSVs from retrieval experiments
+│       ├── submission_retrieval.csv
+│       ├── submission_retrieval_answer.csv
+│       ├── submission_retrieval_final.csv
+│       ├── submission_retrieval_lang.csv
+│       ├── submission_retrieval_mpnet.csv
+│       └── submission_retrieval_topk.csv
 │
 ├── .gitignore
 └── README.md
@@ -186,7 +196,6 @@ jupyter notebook notebooks/
 | 2 | `02_preprocessing.ipynb` | Whitespace normalisation, special-character validation, save `train_clean.csv`, `val_clean.csv`, `test_clean.csv` | No |
 | 3 | `03_baseline.ipynb` | Load `google/mt5-base`, fine-tune without LoRA on a small sample, evaluate ROUGE on validation set | Yes |
 | 4 | `04_experiments.ipynb` | Full LoRA/PEFT fine-tuning experiments — compare learning rates, LoRA rank, batch size | Yes |
-| 5 | `05_inference.ipynb` | Load best checkpoint, generate answers for test set, save `submission.csv` | Yes |
 
 ### Input / output contract per notebook
 
@@ -195,7 +204,6 @@ jupyter notebook notebooks/
 02_preprocessing     →  data/train_clean.csv, data/val_clean.csv, data/test_clean.csv
 03_baseline          →  outputs/baseline_results.json
 04_experiments       →  outputs/best_checkpoint/, outputs/experiment_log.csv
-05_inference         →  submission.csv
 ```
 
 ---
@@ -238,18 +246,23 @@ drive.mount('/content/drive')
 
 ## Experiment Results
 
-Results are measured on the Zindi public leaderboard unless otherwise noted.
+All scores are from the Zindi public leaderboard.
 
-| # | Experiment | Key Changes | Zindi Score |
-|---|---|---|---|
-| — | Baseline | mT5-base, no fine-tuning (zero-shot) | — |
-| 1 | Full fine-tune (small sample) | 500 examples, 3 epochs, lr=5e-4 | — |
-| 2 | LoRA rank-8 | PEFT LoRA r=8, α=32, all layers, 3 epochs | — |
-| 3 | LoRA rank-16 | PEFT LoRA r=16, α=64, 5 epochs | — |
-| 4 | LoRA rank-16 + longer output | max_target_length=384 | — |
-| 5 | Best config | TBD after experiments | — |
+| Experiment | Approach | Zindi Score |
+|---|---|---|
+| 1 | mT5-base + LoRA r=16, 1 epoch, lr=5e-4 | 0.182709 |
+| 2 | 3 epochs, lr=1e-4 | 0.095423 |
+| 4 | LoRA r=32 | 0.194928 |
+| 5 | lr=3e-4, r=32 | 0.132925 |
+| 7 | r=32 + task prefix | 0.195404 |
+| 10 | Sentence-embedding retrieval (MiniLM) | 0.479688 |
+| 11 | Language-aware retrieval | 0.486525 |
+| 12 | Top-3 concatenation | 0.411156 |
+| **13** | **Language-aware + mpnet embeddings (BEST)** | **0.510140** |
+| 14 | Question+answer combined embedding | 0.432645 |
 
-> Scores will be filled in as experiments are completed.
+> Experiments 3 and 6 are omitted — both sessions crashed before a Zindi submission
+> could be made. Experiments 8 and 9 were local analysis runs with no leaderboard submission.
 
 ---
 
@@ -277,24 +290,10 @@ modelling decisions:
 
 ## Requirements
 
-```
-transformers>=4.40.0
-peft>=0.10.0
-datasets>=2.19.0
-accelerate>=0.29.0
-pandas>=2.0.0
-numpy>=1.26.0
-matplotlib>=3.8.0
-seaborn>=0.13.0
-rouge-score>=0.1.2
-sentencepiece>=0.1.99
-jupyter>=1.0.0
-```
-
-Install all at once:
+See `requirements.txt` for the full dependency list.
 
 ```bash
-pip install transformers peft datasets accelerate pandas numpy matplotlib seaborn rouge-score sentencepiece jupyter
+pip install -r requirements.txt
 ```
 
 ---
