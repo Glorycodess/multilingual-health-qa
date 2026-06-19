@@ -16,7 +16,6 @@
 8. [Key EDA Findings](#key-eda-findings)
 9. [Requirements](#requirements)
 10. [Author](#author)
-11. [Academic Integrity Note](#academic-integrity-note)
 
 ---
 
@@ -306,10 +305,3 @@ GitHub: [@Glorycodess](https://github.com/Glorycodess)
 
 ---
 
-## Academic Integrity Note
-
-This project was completed as part of an academic programme. AI coding tools (including
-Claude Code) were used as a support resource — for code suggestions, debugging assistance,
-and documentation drafting — in the same way a student might use Stack Overflow or official
-library documentation. All modelling decisions, experimental design, analysis, and written
-interpretation are the author's own work.
