@@ -300,7 +300,7 @@ pip install -r requirements.txt
 
 ## Author
 
-**Paula**
+**Glory Paul**
 ALU Student — B.Sc. Software Engineering
 GitHub: [@Glorycodess](https://github.com/Glorycodess)
 
