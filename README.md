@@ -305,6 +305,7 @@ pip install -r requirements.txt
 **Glory Paul**
 ALU Student — B.Sc. Software Engineering
 GitHub: [@Glorycodess](https://github.com/Glorycodess)
+DEMO vIDEO: https://youtu.be/fLqK0Jd_Vn8
 
 ---
 
