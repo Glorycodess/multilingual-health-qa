@@ -4,6 +4,12 @@
 
 ---
 
+## Demo
+
+[![Demo Video](https://img.youtube.com/vi/fLqK0Jd_Vn8/0.jpg)](https://youtu.be/fLqK0Jd_Vn8)
+
+---
+
 ## Table of Contents
 
 1. [Competition Overview](#competition-overview)
@@ -305,7 +311,7 @@ pip install -r requirements.txt
 **Glory Paul**
 ALU Student — B.Sc. Software Engineering
 GitHub: [@Glorycodess](https://github.com/Glorycodess)
-DEMO vIDEO: https://youtu.be/fLqK0Jd_Vn8
+
 
 ---
 
